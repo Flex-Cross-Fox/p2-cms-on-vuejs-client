@@ -9,179 +9,172 @@
     <link rel="icon" href="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/227_Netflix_logo-512.png">
 </head>
 <body>
-    <div class="navbar">
-        <a href="#" id="navbarHome">Home</a>
-        <a href="#" id="navbarAddMovie">Add Movie</a>
-        <a href="#" id="navbarRegister">Register</a>
-        <a href="#" id="navbarLogout">Logout</a>
-        <a href="#" id="navbarLogin">Login</a>
-    </div>
-    <div id="main">
-        <div class="eachForm" id="login-form">
-            <form>
-                <div id="login">
-                    <div class="each-form">
-                        <h1>Login</h1>
-                    </div>
-                    <div class="each-form">
-                        <label>Email</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <label>Password</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <button>Login</button>
-                    </div>
-                </div>
-            </form>
+    <div id="app"></div>
+    <!-- <div id="app">
+        <div class="navbar">
+            <a href="#" @click="isiHome()" v-if="currentlyPage !== 'login' || currentlyPage !== 'register'" id="navbarHome">Home</a>
+            <a href="#" @click="showAddMovieForm()" v-if="currentlyPage !== 'login' && currentlyPage !== 'register'" id="navbarAddMovie">Add Movie</a>
+            <a href="#" @click="changePage('register')" v-if="currentlyPage == 'login'" id="navbarRegister">Register</a>
+            <a href="#" @click="logoutFunction()" v-if="currentlyPage !== 'login' && currentlyPage !== 'register'"  id="navbarLogout">Logout</a>
+            <a href="#" @click="changePage('login')" v-if="currentlyPage == 'register'" id="navbarLogin">Login</a>
         </div>
-
-        <div class="eachForm" id="register-form">
-            <form>
-                <div id="register">
-                    <div class="each-form">
-                        <h1>Register</h1>
+        <div id="main">
+            <div v-if="currentlyPage == 'login'" class="eachForm" id="login-form">
+                <form @submit.prevent="loginFormInput">
+                    <div id="login">
+                        <div class="each-form">
+                            <h1>Login</h1>
+                        </div>
+                        <div class="each-form">
+                            <label>Email</label>
+                            <input type="text"  v-model="loginForm.email">
+                        </div>
+                        <div class="each-form">
+                            <label>Password</label>
+                            <input type="password" v-model="loginForm.password">
+                        </div>
+                        <div class="each-form">
+                            <button>Login</button>
+                        </div>
                     </div>
-                    <div class="each-form">
-                        <label>Name</label>
-                        <input type="text">
+                </form>
+            </div>
+    
+            <div v-else-if="currentlyPage == 'register'" class="eachForm" id="register-form">
+                <form @submit.prevent="registerFormInput">
+                    <div id="register">
+                        <div class="each-form">
+                            <h1>Register</h1>
+                        </div>
+                        <div class="each-form">
+                            <label>Name</label>
+                            <input type="text" v-model="registerForm.name">
+                        </div>
+                        <div class="each-form">
+                            <label>Role</label>
+                            <input type="text" v-model="registerForm.role">
+                        </div>
+                        <div class="each-form">
+                            <label>Email</label>
+                            <input type="email" v-model="registerForm.email">
+                        </div>
+                        <div class="each-form">
+                            <label>Password</label>
+                            <input type="password" v-model="registerForm.password">
+                        </div>
+                        <div class="each-form">
+                            <button>Register</button>
+                        </div>
                     </div>
-                    <div class="each-form">
-                        <label>Role</label>
-                        <input type="text">
+                </form>
+            </div>
+    
+            <div v-else-if="currentlyPage == 'add'" class="eachForm" id="add-movie-form">
+                <form @submit.prevent="addMovieForm">
+                    <div id="add">
+                        <div class="each-form">
+                            <h1>Add Movie</h1>
+                        </div>
+                        <div class="each-form">
+                            <label>Movie Name</label>
+                            <input type="text" v-model="MovieForm.title">
+                        </div>
+                        <div class="each-form">
+                            <label>Synopsis</label>
+                            <input type="text" v-model="MovieForm.synopsis">
+                        </div>
+                        <div class="each-form">
+                            <label>Rating</label>
+                            <input type="number" v-model="MovieForm.rating">
+                        </div>
+                        <div class="each-form">
+                            <label>Image</label>
+                            <input type="file" @change="handleFile">
+                        </div>
+                        <div class="each-form">
+                            <label>Video URL</label>
+                            <input type="text" v-model="MovieForm.trailerUrl">
+                        </div>
+                        <div class="each-form">
+                            <label>Genre</label>
+                            <select name="genre" v-model="MovieForm.genreId">
+                                <option v-for="genre in genreName" :key="genre.id" :value="genre.id">{{genre.name}}</option>
+                            </select>
+                        </div>
+                        <div class="each-form">
+                            <button>Add Movie</button>
+                        </div>
                     </div>
-                    <div class="each-form">
-                        <label>Email</label>
-                        <input type="text">
+                </form>
+            </div>
+    
+            <div v-else-if="currentlyPage == 'edit'" class="eachForm" id="Edit-movie-form">
+                <form @submit.prevent="submitEditMovie">
+                    <div id="Edit">
+                        <div class="each-form">
+                            <h1>Edit Movie</h1>
+                        </div>
+                        <div class="each-form">
+                            <label>Movie Name</label>
+                            <input type="text" v-model="MovieForm.title">
+                        </div>
+                        <div class="each-form">
+                            <label>Synopsis</label>
+                            <input type="text" v-model="MovieForm.synopsis">
+                        </div>
+                        <div class="each-form">
+                            <label>Rating</label>
+                            <input type="text" v-model="MovieForm.rating">
+                        </div>
+                        <div class="each-form">
+                            <label>Image URL</label>
+                            <input type="file" @change="MovieForm.imageUrl">
+                        </div>
+                        <div class="each-form">
+                            <label>Trailer URL</label>
+                            <input type="text" v-model="imageFile">
+                        </div>
+                        <div class="each-form">
+                            <label>Genre</label>
+                            <select name="editGenreId" v-model="MovieForm.genreId">
+                                <option v-for="genre in genreName" :key="genre.id" :value="genre.id" :selected="MovieForm.genreId == genre.id">{{genre.name}}</option>
+                            </select>
+                        </div>
+                        <div class="each-form">
+                            <button>Edit Movie</button>
+                        </div>
                     </div>
-                    <div class="each-form">
-                        <label>Password</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <button>Register</button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
+    
+            <div id="MovieTable" v-else>
+                <table id="table-Movie">
+                    <tr>
+                        <th>Movie</th>
+                        <th>Synopsis</th>
+                        <th>Rating</th>
+                        <th>Image</th>
+                        <th>Video</th>
+                        <th>Genre</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr v-for="movie in Movies" :key="movie.id" >
+                        <td>{{ movie.title }}</td>
+                        <td>{{ movie.synopsis }}</td>
+                        <td>{{ movie.rating }}</td>
+                        <td>{{ movie.imgUrl }}</td>
+                        <td>{{ movie.trailerUrl }}</td>
+                        <td>{{ movie.Genre.name }}</td>
+                        <td>{{ movie.status }}</td>
+                        <td><a href="#" @click="ShoweditMovie(movie.id)">Edit</a> || <a href="#" @click="deleteMovie(movie.id)">Delete</a> || <a href="#" @click="inactiveMovie(movie.id)">Inactive</a></td>
+                    </tr>
+                </table>
+            </div>
         </div>
-
-        <div class="eachForm" id="add-movie-form">
-            <form>
-                <div id="add">
-                    <div class="each-form">
-                        <h1>Add Movie</h1>
-                    </div>
-                    <div class="each-form">
-                        <label>Movie Name</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <label>Synopsis</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <label>Rating</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <label>Image URL</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <label>Video URL</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <label>Genre Id</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <button>Add Movie</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div class="eachForm" id="Edit-movie-form">
-            <form>
-                <div id="Edit">
-                    <div class="each-form">
-                        <h1>Edit Movie</h1>
-                    </div>
-                    <div class="each-form">
-                        <label>Movie Name</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <label>Synopsis</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <label>Rating</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <label>Image URL</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <label>Video URL</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <label>Genre Id</label>
-                        <input type="text">
-                    </div>
-                    <div class="each-form">
-                        <button>Edit Movie</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div id="MovieTable">
-            <table id="table-Movie">
-                <tr>
-                    <td>Movie</td>
-                    <td>Synopsis</td>
-                    <td>Rating</td>
-                    <td>Image</td>
-                    <td>Video</td>
-                    <td>Genre</td>
-                    <td>Action</td>
-                </tr>
-                <tr>
-                    <td>Superman</td>
-                    <td>Film</td>
-                    <td>8</td>
-                    <td>Google</td>
-                    <td>youtube</td>
-                    <td>lupa</td>
-                    <td><a href="#">Edit</a> || <a href="#">Delete</a></td>
-                </tr>
-                <tr>
-                    <td>Superman</td>
-                    <td>Film</td>
-                    <td>8</td>
-                    <td>Google</td>
-                    <td>youtube</td>
-                    <td>lupa</td>
-                    <td><a href="#">Edit</a> || <a href="#">Delete</a></td>
-                </tr>
-                <tr>
-                    <td>Superman</td>
-                    <td>Film</td>
-                    <td>8</td>
-                    <td>Google</td>
-                    <td>youtube</td>
-                    <td>lupa</td>
-                    <td><a href="#">Edit</a> || <a href="#">Delete</a></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <script src="main.js"></script>    
+    </div> -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="/src/main.js"></script>    
 </body>
 </html>

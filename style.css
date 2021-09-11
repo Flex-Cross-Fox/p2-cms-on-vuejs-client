@@ -15,6 +15,10 @@
     margin: 15px;
 }
 
+/* #app{
+    font-size: 34px;
+} */
+
 #main{
     display: flex;
     flex-direction: column;
@@ -31,12 +35,18 @@
 }
 
 button{
-    font-size: 34px;
+    font-size: 48px;
     
 }
 
 input{
+    height: 39px;
+    font-size: 39px;
+}
+
+option{
     height: 30px;
+    font-size: 30px;
 }
 
 label{
