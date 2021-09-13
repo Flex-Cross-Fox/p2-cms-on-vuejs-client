@@ -7,15 +7,15 @@
                 </div>
                 <div class="each-form">
                     <label>Movie Name</label>
-                    <input type="text" v-model="data.title">
+                    <input type="text" v-model="submitEditMovie.title">
                 </div>
                 <div class="each-form">
                     <label>Synopsis</label>
-                    <input type="text" v-model="data.synopsis">
+                    <input type="text" v-model="submitEditMovie.synopsis">
                 </div>
                 <div class="each-form">
                     <label>Rating</label>
-                    <input type="text" v-model="data.rating">
+                    <input type="text" v-model="submitEditMovie.rating">
                 </div>
                 <div class="each-form">
                     <label>Image URL</label>
@@ -23,11 +23,11 @@
                 </div>
                 <div class="each-form">
                     <label>Trailer URL</label>
-                    <input type="text" v-model="data.trailerUrl">
+                    <input type="text" v-model="submitEditMovie.trailerUrl">
                 </div>
                 <div class="each-form">
                     <label>Genre</label>
-                    <select name="editGenreId" v-model="data.genreId">
+                    <select name="editGenreId" v-model="submitEditMovie.genreId">
                         <option v-for="genre in genresEdit" :key= 'genre.id' :value="genre.id">{{genre.name}}</option>
                     </select>
                 </div>
@@ -46,7 +46,7 @@ export default {
             let newData = new FormData()
             // if(this.imgUrl){
             // }
-                newData.append('fileInput', this.imgUrl)
+            newData.append('fileInput', this.imgUrl)
             newData.append('status', this.submitEditMovie.status)
             newData.append('title', this.submitEditMovie.title)
             newData.append('synopsis', this.submitEditMovie.synopsis)
@@ -54,7 +54,8 @@ export default {
             newData.append('rating', this.submitEditMovie.rating)
             newData.append('genreId', this.submitEditMovie.genreId)
             this.$emit('submitMovie', newData)
-            this.submitEditMovie = {title: '', synopsis: '', trailerUrl: '',status: '', rating: '', genreId: ''}
+            console.log(this.submitEditMovie);
+            // this.submitEditMovie = {title: '', synopsis: '', trailerUrl: '',status: '', rating: '', genreId: ''}
             // this.$emit('submitEditResult', input)
         },
         imageMethod(event){
@@ -65,6 +66,11 @@ export default {
         return {
             imgUrl: "",
             submitEditMovie: {title: "", synopsis: "", trailerUrl: "", rating: "", status:"" ,genreId: ""}
+        }
+    },
+    watch: {
+        data(){
+            this.submitEditMovie = this.data
         }
     },
     props: ['data', "genresEdit"]
