@@ -44,8 +44,6 @@ export default {
     methods: {
         submitEdit(){
             let newData = new FormData()
-            // if(this.imgUrl){
-            // }
             newData.append('fileInput', this.imgUrl)
             newData.append('status', this.submitEditMovie.status)
             newData.append('title', this.submitEditMovie.title)
@@ -56,7 +54,6 @@ export default {
             this.$emit('submitMovie', newData)
             console.log(this.submitEditMovie);
             // this.submitEditMovie = {title: '', synopsis: '', trailerUrl: '',status: '', rating: '', genreId: ''}
-            // this.$emit('submitEditResult', input)
         },
         imageMethod(event){
             this.imgUrl = event.target.files[0]

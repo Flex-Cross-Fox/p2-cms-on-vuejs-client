@@ -1,6 +1,5 @@
 <template>
 <div>
-  <!-- <h1>{{ message }}</h1> -->
   <Navbar :isLogin="isLogin" :currentlyPage="currentlyPage" @changePage="changePage"></Navbar>
   <Login v-if="currentlyPage == 'login'" @loginForm="submitLogin"></Login>
   <Register v-else-if="currentlyPage == 'register'" @submitRegister="submitRegister"></Register>
@@ -11,7 +10,7 @@
 </template>
 
 <script>
-
+const baseURL = 'https://phase2-c2.herokuapp.com/'
 import Navbar from './components/Navbar.vue'
 import Login from './views/login.vue'
 import Register from './views/register.vue'
@@ -50,7 +49,7 @@ export default {
       submitLogin(input){
         axios({
           method: "POST",
-          url: "http://localhost:3000/login",
+          url: baseURL + "login",
           data: input
         })
         .then((data) => {
@@ -64,7 +63,7 @@ export default {
       submitRegister(input){
         axios({
           method: 'POST',
-          url: "http://localhost:3000/register",
+          url: baseURL + "register",
           data: input
         })
         .then((data) => {
@@ -79,7 +78,7 @@ export default {
         console.log('masuk');
         axios({
           method: 'GET',
-          url: "http://localhost:3000/genres"
+          url: baseURL + "genres"
         })
         .then((data) => {
           console.log(data.data);
@@ -92,7 +91,7 @@ export default {
       addMovie(input){
         axios({
           method: "POST",
-          url: "http://localhost:3000/movies",
+          url: baseURL + "movies",
           data: input,
           headers: {token: localStorage.getItem('token') },
           contentType: false,
@@ -110,7 +109,7 @@ export default {
       getAllMovie(){
         axios({
           method: "GET",
-          url: "http://localhost:3000/movies",
+          url: baseURL + "movies",
           headers: {token: localStorage.getItem('token') }
         })
         .then((data) => {
@@ -124,10 +123,10 @@ export default {
       deleteMovie(id){
         axios({
           method: "DELETE",
-          url: "http://localhost:3000/movies/" + id,
+          url: baseURL + "movies/" + id,
           headers: {token: localStorage.getItem('token') }
         })
-        .then((data) => {
+        .then(() => {
           this.changePage('home')
         })
         .catch((err) => {
@@ -137,7 +136,7 @@ export default {
       inactiveMovie(id){
         axios({
           method: "PATCH",
-          url: "http://localhost:3000/movies/" + id,
+          url: baseURL + "movies/" + id,
           headers: {token: localStorage.getItem('token') }
         })
         .then((data) => {
@@ -152,7 +151,7 @@ export default {
         this.currentlyPage = 'edit'
         axios({
           method: "GET",
-          url: "http://localhost:3000/movies/" + id,
+          url: baseURL + "movies/" + id,
           headers: {token: localStorage.getItem('token') }
         })
         .then((data) => {
@@ -168,7 +167,7 @@ export default {
         console.log(data);
         axios({
           method: "PUT",
-          url: "http://localhost:3000/movies/" + this.idMovieEdit,
+          url: baseURL + "movies/" + this.idMovieEdit,
           data: data,
           headers: {token: localStorage.getItem('token') },
           contentType: false,

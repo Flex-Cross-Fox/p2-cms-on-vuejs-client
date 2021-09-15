@@ -41,11 +41,6 @@ export default {
             this.$emit('inactiveMovie', id)
         }
     },
-    data(){
-        return {
-            // movies: []
-        }
-    },
     props: ['movies']
 }
 </script>
